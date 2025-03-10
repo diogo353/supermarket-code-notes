@@ -38,6 +38,8 @@ export function ProductForm({
     price: product?.price || 0,
     department: product?.department || departments[0],
     notes: product?.notes || "",
+    stock: product?.stock || 0,
+    minStock: product?.minStock || 0,
   });
   
   const [showScanner, setShowScanner] = useState(false);
@@ -48,7 +50,9 @@ export function ProductForm({
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: name === "price" ? parseFloat(value) || 0 : value,
+      [name]: name === "price" || name === "stock" || name === "minStock" 
+        ? parseFloat(value) || 0 
+        : value,
     }));
   };
 
@@ -128,6 +132,35 @@ export function ProductForm({
         />
       </div>
       
+      {/* Stock Control Fields */}
+      <div className="grid grid-cols-2 gap-4">
+        <div className="space-y-2">
+          <Label htmlFor="stock">Estoque Atual</Label>
+          <Input
+            id="stock"
+            name="stock"
+            type="number"
+            value={formData.stock}
+            onChange={handleChange}
+            placeholder="0"
+            className="glass"
+          />
+        </div>
+        
+        <div className="space-y-2">
+          <Label htmlFor="minStock">Estoque Mínimo</Label>
+          <Input
+            id="minStock"
+            name="minStock"
+            type="number"
+            value={formData.minStock}
+            onChange={handleChange}
+            placeholder="0"
+            className="glass"
+          />
+        </div>
+      </div>
+      
       <div className="space-y-2">
         <Label htmlFor="department">Departamento</Label>
         <Select
@@ -147,7 +180,6 @@ export function ProductForm({
         </Select>
       </div>
       
-      {/* Add new notes field */}
       <div className="space-y-2">
         <Label htmlFor="notes">Observações</Label>
         <Textarea
