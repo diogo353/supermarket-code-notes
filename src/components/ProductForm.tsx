@@ -12,7 +12,9 @@ import {
 } from "@/components/ui/select";
 import { toast } from "@/components/ui/sonner";
 import { Product, ProductFormData, departments } from "@/lib/types";
+import { BarcodeScanner } from "@/components/BarcodeScanner";
 import { cn } from "@/lib/utils";
+import { Scan } from "lucide-react";
 
 interface ProductFormProps {
   onSubmit: (data: ProductFormData) => void;
@@ -35,6 +37,8 @@ export function ProductForm({
     price: product?.price || 0,
     department: product?.department || departments[0],
   });
+  
+  const [showScanner, setShowScanner] = useState(false);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement>
@@ -61,11 +65,31 @@ export function ProductForm({
     
     onSubmit(formData);
   };
+  
+  const handleCodeScanned = (code: string) => {
+    setFormData(prev => ({
+      ...prev,
+      code: code
+    }));
+    toast.success(`Código ${code} escaneado com sucesso!`);
+  };
 
   return (
     <form onSubmit={handleSubmit} className={cn("space-y-4 p-4", className)}>
       <div className="space-y-2">
-        <Label htmlFor="code">Código do Produto</Label>
+        <div className="flex justify-between items-center">
+          <Label htmlFor="code">Código do Produto</Label>
+          <Button 
+            type="button" 
+            variant="outline" 
+            size="sm"
+            onClick={() => setShowScanner(true)}
+            className="flex items-center gap-1"
+          >
+            <Scan className="h-4 w-4" />
+            <span className="text-xs">Escanear</span>
+          </Button>
+        </div>
         <Input
           id="code"
           name="code"
@@ -139,6 +163,13 @@ export function ProductForm({
           {isEdit ? "Atualizar" : "Adicionar"} Produto
         </Button>
       </div>
+
+      {showScanner && (
+        <BarcodeScanner 
+          onCodeScanned={handleCodeScanned} 
+          onClose={() => setShowScanner(false)} 
+        />
+      )}
     </form>
   );
 }
