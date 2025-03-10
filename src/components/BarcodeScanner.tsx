@@ -45,7 +45,8 @@ export function BarcodeScanner({ onCodeScanned, onClose }: BarcodeScannerProps) 
       await scannerRef.current.start(
         { facingMode: "environment" }, 
         config, 
-        qrCodeSuccessCallback
+        qrCodeSuccessCallback,
+        undefined // Adding the fourth argument (error callback) as undefined
       );
     } catch (err) {
       toast.error("Erro ao iniciar o scanner. Verifique as permissões da câmera.");
