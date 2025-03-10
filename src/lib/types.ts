@@ -5,6 +5,7 @@ export interface Product {
   name: string;
   price: number;
   department: string;
+  notes?: string; // Adding notes field
   createdAt: Date;
   updatedAt: Date;
 }

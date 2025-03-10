@@ -9,10 +9,16 @@ import {
   DropdownMenuTrigger 
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { Edit, Trash, MoreVertical } from "lucide-react";
+import { Edit, Trash, MoreVertical, MessageSquare } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { cn } from "@/lib/utils";
+import { 
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface ProductCardProps {
   product: Product;
@@ -60,6 +66,24 @@ export function ProductCard({
           <p className="font-medium">
             R$ {product.price.toFixed(2).replace(".", ",")}
           </p>
+          
+          {product.notes && (
+            <div className="flex items-center gap-1 text-xs text-muted-foreground mt-2">
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <div className="flex items-center cursor-pointer">
+                      <MessageSquare className="h-3.5 w-3.5 mr-1" />
+                      <span>Observações</span>
+                    </div>
+                  </TooltipTrigger>
+                  <TooltipContent className="max-w-xs">
+                    <p>{product.notes}</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </div>
+          )}
         </div>
         
         <DropdownMenu>

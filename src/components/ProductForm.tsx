@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import { 
   Select, 
   SelectContent, 
@@ -36,12 +37,13 @@ export function ProductForm({
     name: product?.name || "",
     price: product?.price || 0,
     department: product?.department || departments[0],
+    notes: product?.notes || "",
   });
   
   const [showScanner, setShowScanner] = useState(false);
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -143,6 +145,19 @@ export function ProductForm({
             ))}
           </SelectContent>
         </Select>
+      </div>
+      
+      {/* Add new notes field */}
+      <div className="space-y-2">
+        <Label htmlFor="notes">Observações</Label>
+        <Textarea
+          id="notes"
+          name="notes"
+          value={formData.notes || ""}
+          onChange={handleChange}
+          placeholder="Adicione observações sobre o produto..."
+          className="glass min-h-[100px]"
+        />
       </div>
       
       <div className="flex justify-end space-x-2 pt-4">
