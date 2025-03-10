@@ -7,6 +7,7 @@ import { DateTime } from "@/components/DateTime";
 import { ProductForm } from "@/components/ProductForm";
 import { ProductCard } from "@/components/ProductCard";
 import { ProductChart } from "@/components/ProductChart";
+import { InventoryAnalysis } from "@/components/InventoryAnalysis";
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -14,7 +15,8 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { toast } from "@/components/ui/sonner";
 import { Product, ProductFormData } from "@/lib/types";
-import { Plus, Search } from "lucide-react";
+import { Plus, Search, BarChart4 } from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const Index = () => {
   const [products, setProducts] = useState<Product[]>(() => {
@@ -170,8 +172,25 @@ const Index = () => {
             </div>
             
             <div className="space-y-4">
-              <h2 className="text-2xl font-bold tracking-tight">Estatísticas</h2>
-              <ProductChart products={products} className="animate-slideUp animate-delay-200" />
+              <div className="flex items-center justify-between">
+                <h2 className="text-2xl font-bold tracking-tight">Estatísticas</h2>
+                <BarChart4 className="h-5 w-5 text-muted-foreground" />
+              </div>
+              
+              <Tabs defaultValue="chart" className="w-full">
+                <TabsList className="grid grid-cols-2 mb-4">
+                  <TabsTrigger value="chart">Distribuição</TabsTrigger>
+                  <TabsTrigger value="inventory">Inventário</TabsTrigger>
+                </TabsList>
+                
+                <TabsContent value="chart" className="mt-0">
+                  <ProductChart products={products} className="animate-slideUp" />
+                </TabsContent>
+                
+                <TabsContent value="inventory" className="mt-0">
+                  <InventoryAnalysis products={products} className="animate-slideUp" />
+                </TabsContent>
+              </Tabs>
               
               <div className="glass-card p-4 animate-slideUp animate-delay-300">
                 <h3 className="font-medium text-lg mb-2">Resumo</h3>
