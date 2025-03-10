@@ -9,7 +9,7 @@ import {
   DropdownMenuTrigger 
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { Edit, Trash, MoreVertical, MessageSquare, Package } from "lucide-react";
+import { Edit, Trash, MoreVertical, MessageSquare } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { cn } from "@/lib/utils";
@@ -35,16 +35,11 @@ export function ProductCard({
 }: ProductCardProps) {
   const [isHovered, setIsHovered] = useState(false);
   
-  // Determine stock status
-  const hasStockInfo = product.stock !== undefined;
-  const isLowStock = hasStockInfo && product.minStock !== undefined && product.stock < product.minStock;
-  
   return (
     <Card 
       className={cn(
         "glass-card p-4 transition-all duration-300", 
         isHovered ? "scale-[1.02]" : "",
-        isLowStock ? "border-yellow-400 dark:border-yellow-600" : "",
         className
       )}
       onMouseEnter={() => setIsHovered(true)}
@@ -71,27 +66,6 @@ export function ProductCard({
           <p className="font-medium">
             R$ {product.price.toFixed(2).replace(".", ",")}
           </p>
-          
-          {/* Stock information */}
-          {hasStockInfo && (
-            <div className="flex items-center mt-2 space-x-2">
-              <div className={cn(
-                "flex items-center text-xs rounded-full px-2 py-0.5",
-                isLowStock 
-                  ? "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400" 
-                  : "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400"
-              )}>
-                <Package className="h-3.5 w-3.5 mr-1" />
-                <span>{product.stock} {product.stock === 1 ? "unidade" : "unidades"}</span>
-              </div>
-              
-              {isLowStock && (
-                <span className="text-xs text-yellow-700 dark:text-yellow-500">
-                  Estoque baixo
-                </span>
-              )}
-            </div>
-          )}
           
           {product.notes && (
             <div className="flex items-center gap-1 text-xs text-muted-foreground mt-2">
